@@ -1,24 +1,11 @@
 function [output] = fsom(dataset)
 
-if (nargin ~= 2)
-    error('Bad numer of arguments, see >>help fuzzycap');
-end
+clusterX
+n = [n(1:3) 2 n(3:6)]
 
-nx = size(invalue,1);			% number of input cases
-nv = size(ifs.input,2);		% number of input variables
-nr = size(ifs.rule,2);			% number of rules
-no = size(ifs.output,2);		% number of output variables
-
-antactiv=ones(nx,nr,nv);		% Antecedent activations
-rulactiv = ones(nx, nr);		% Rule activations
-rules_antec=zeros(nv,nr); 		% Rule base antecedents
-rules_antec(:)=[ifs.rule.antecedent];
-rules_consec=zeros(no,nr); 		% Rule base consequents
-rules_consec(:)=[ifs.rule.consequent];
-
-for iv = 1:nv,
-   % Compute the memberships of the variable (Fuzzification)
-   [pert, nmf] = ifvar( invalue(:,iv), ifs.input(iv).mf_type, ifs.input(iv).mf_params );
+i = 0
+for i = 1:5,
+  
    
    % Compute the rule activation (inference)
    rulinvar = rules_antec(iv,:);
