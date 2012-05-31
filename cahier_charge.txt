@@ -1,0 +1,5 @@
+Cahier des charges mini-projet
+Implémentation avec Octave de l'algorithme de FSOM.
+Dans un premier temps nous allons réaliser un protoype de l'implémentation de l'algorithme pour des données à 2 dimensions.
+Nous proposons egalement de créer notre dataset personnalisé pour réaliser les tests.
+Ce qui nous permettra de constater l'efficacité de cette méthode.
