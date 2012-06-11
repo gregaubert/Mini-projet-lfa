@@ -1,5 +1,5 @@
-val =	 [3,2,0.8,2,1,7,8,9,9,8;
-	   3,2,2,3,1,7,8,9,9,8];
+val =	 [3,2,8.8,2,1,7,8,9,9,8;
+	   3,2,8.8,3,1,7,8,9,9,8];
 %appart(val,10,10);
 
 % Main fonction
@@ -45,6 +45,10 @@ function [newFctX,newFctY] = checkPoint(fctAppX,fctAppY,regles, coord, x_max, y_
 	
 	newFctX = [fctAppX; vecteurX];
 	newFctY = [fctAppY; vecteurY];
+	
+	for i=1:size(fctAppX)
+		newFctX = checkMatriceInsersion(newFctX,i);
+	endfor
 
 endfunction
 
@@ -75,16 +79,40 @@ function [pourcent, indice] = mu(coord, fctApp)
 	end
 endfunction
 
-function checkMatriceInsersion(fctApp, indice)
-	delta = 0.5;
-	vecteur = fctApp(indice);
-	for i=1:size(fctApp)(1)
-		if(vecteur(4) >= fctApp(i,1) & vecteur(4) <= fctApp(i,3))
-			% adapter les 2 points
-		elseif (abs(vecteur(4) - fctApp(i,1)) <= delta)
-			% Appondre /\/\
+function fctApp = checkMatriceInsersion(fctApp, indice)
+	delta = 0.2;
+	vecteur = fctApp(indice,:);
+	for i=1:size(fctApp)(1)	
+		if i != indice	
+
+				
+			if (abs(vecteur(4) - fctApp(i,1)) <= delta)
+				% Appondre /   ->\/\
+				% Déplace le haut et le bas				
+				diff = fctApp(i,1) - vecteur(4);
+				fctApp(indice,4) = fctApp(i,1);
+				fctApp(indice,3) = fctApp(indice,3) + diff;
+				
+			elseif (vecteur(4) >= fctApp(i,1) & vecteur(4) <= fctApp(i,3))
+				% adapter les 2 points
+				fctApp(indice,4) = fctApp(i,2);
+				fctApp(indice,3) = fctApp(i,1);
+			
+			elseif(abs(vecteur(1)-fctApp(i,4)) <= delta)
+				% Appondre /\/ <-   \
+				diff = fctApp(i,4)-fctApp(indice,1);
+				fctApp(indice,1) = fctApp(i,4);
+				fctApp(indice,2) = vecteur(2) + diff;
+				
+			elseif(vecteur(1) >= fctApp(i,2) & vecteur(1) <= fctApp(i,4))
+				% adapter les deux points
+				fctApp(indice,1) = fctApp(i,3);
+				fctApp(indice,2) = fctApp(i,4);
+				
+			endif
 		endif
 	endfor
+	
 end
 
-
+appart(val,10,10);
