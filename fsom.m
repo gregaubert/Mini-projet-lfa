@@ -1,21 +1,29 @@
-val =	 [3,2,8.8,2,1,7,8,9,9,8;
-	   3,2,8.8,3,1,7,8,9,9,8];
-%appart(val,10,10);
+% Définition d'un dataset de test
 m = rand (2,10) * 10;
-n = rand(2,10) * 10 + 30;
+n = rand(2,10) * 10 +7;
 dataset = [m(1,:), n(1,:);m(2,:),n(2,:)];
 
 % Main fonction
 % on passe en parametre la matrice de coordonnees ainsi que les limites du tableau 2D
-function appart(matriceVal, x_max, y_max)
+% parametres :	- matriceVal : dataset de donnees
+%                      	- x_max : valeur maximum en x
+%	- y_max : valeur maximum en y
+%	- epochs : nombre d'iteration avant l'affichage du resultat
+function clustering(matriceVal, x_max, y_max, epochs)
 	fctAppX = [];
 	fctAppY = [];
 	regles = [];
-	% on selectionne chaque point
-	for n =1: size(matriceVal)(2)
-		% on donne un point et il adapte la matrice des fonctions d'appartenance
-		[fctAppX,fctAppY, regles] = checkPoint(fctAppX,fctAppY, regles, matriceVal(:, n)', x_max, y_max);
+	
+	% Pour chaque epochs
+	for i = 1:epochs
+		% on selectionne chaque point
+		for n = 1: size(matriceVal)(2)
+			% on donne un point et il adapte la matrice des fonctions d'appartenance
+			[fctAppX,fctAppY, regles] = checkPoint(fctAppX,fctAppY, regles, matriceVal(:, n)', x_max, y_max);
+		end
 	end
+	
+	% Affichage du résultat
 	disp("Fonction Appartenance X");
 	disp(fctAppX);
 	disp("Fonction Appartenance Y");
@@ -23,8 +31,6 @@ function appart(matriceVal, x_max, y_max)
 	disp("Regles actives");
 	disp(regles);
 endfunction
-
-% afficher matrice = disp(..)
 
 % Creer, adapte les fonctions d'appartenance par rapport au point "coord"
 function [newFctX,newFctY, newRegles] = checkPoint(fctAppX,fctAppY,regles, coord, x_max, y_max)
@@ -34,8 +40,6 @@ function [newFctX,newFctY, newRegles] = checkPoint(fctAppX,fctAppY,regles, coord
 	
 	% Traite un point selon son mu
 	[newFctX, indiceAppX] = checkAppart(x, fctAppX, x_max);
-	disp("pas : ");
-	disp(newFctX);
 	[newFctY, indiceAppY] = checkAppart(y, fctAppY, y_max);
 	
 	% Verifie que la regle soit active
@@ -94,6 +98,7 @@ function [newFctApp, newIndice] = checkAppart(p, fctApp, p_max)
 	newFctApp = fctApp;
 endfunction
 
+% Recherche du meilleur mu
 function [pourcent, indice, c, b] = mu(coord, fctApp)
 	pourcent = 0;
 	temp = 0;
@@ -111,6 +116,7 @@ function [pourcent, indice, c, b] = mu(coord, fctApp)
 	end
 endfunction
 
+% Calcul du mu
 function [pourcent, c, b] = muLigne(coord, ligne, fctApp)
 	c=0;
 	b=0;
@@ -131,6 +137,7 @@ function [pourcent, c, b] = muLigne(coord, ligne, fctApp)
 	end
 endfunction
 
+% Vérifie l'insertion d'une fonction d'appartenance
 function fctApp = checkMatriceInsersion(fctApp, indice)
 	delta = 0.2;
 	vecteur = fctApp(indice,:);
@@ -184,4 +191,4 @@ function fctAppNew = checkMatriceModif(fctApp, indice, old)
 endfunction
 
 
-appart(dataset,40,40);
+clustering(dataset,40,40, 10);
